@@ -67,7 +67,6 @@
                 <br>
                 <button type="button" onclick="signIn()">Sign In</button>
             </form>
-            <p id="signin-status"></p>
         </div>
     </div>
 
@@ -100,14 +99,18 @@
         function signIn() {
             var username = document.getElementById("username").value;
             var password = document.getElementById("password").value;
-            var statusElement = document.getElementById("signin-status");
 
             // Check if the username and password match any user in the array
             var user = users.find(user => user.username === username && user.password === password);
 
             if (user) {
                 // Successful sign-in
-                statusElement.innerHTML = "Sign-in successful! Welcome, " + user.username + ".";
+                alert("Sign-in successful! Welcome, " + user.username + ".");
             } else {
                 // Failed sign-in
-                statusE
+                alert("Invalid username or password. Try again.");
+            }
+        }
+    </script>
+</body>
+</html>
