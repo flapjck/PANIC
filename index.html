@@ -7,6 +7,25 @@
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@300;400;500;600;700&display=swap">
     <link rel="stylesheet" href="style.css"> <!-- Link to the external style.css file -->
+    <style>
+        /* Additional styling for messages and log out button */
+        #messages {
+            background-color: #f2f2f2;
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-top: 20px;
+        }
+
+        #logout-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
     <div id="header-text">
@@ -43,8 +62,21 @@
             </p>
         </div>
 
-        <!-- Sign-up Form -->
-        <div class="section signup-section">
+        <!-- Messages Section -->
+        <div id="messages"></div>
+
+        <!-- Login/Logout Section -->
+        <div class="section login-section">
+            <form id="login-form">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+                <br>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+                <br>
+                <button type="button" onclick="handleLogin()">Log In</button>
+            </form>
+
             <form id="signup-form">
                 <label for="new-username">New Username:</label>
                 <input type="text" id="new-username" name="new-username" required>
@@ -52,51 +84,41 @@
                 <label for="new-password">New Password:</label>
                 <input type="password" id="new-password" name="new-password" required>
                 <br>
-                <button type="button" onclick="signUp()">Sign Up</button>
+                <button type="button" onclick="handleSignUp()">Sign Up</button>
             </form>
-        </div>
 
-        <!-- Sign-in Form -->
-        <div class="section signin-section">
-            <form id="signin-form">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" required>
-                <br>
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
-                <br>
-                <button type="button" onclick="signIn()">Sign In</button>
-            </form>
+            <button id="logout-button" onclick="handleLogout()" style="display: none;">Log Out</button>
         </div>
     </div>
 
     <script>
         // User data array
         var users = [];
+        // Current logged-in user (null if not logged in)
+        var currentUser = null;
 
         // JavaScript code for handling sign-up functionality
-        function signUp() {
+        function handleSignUp() {
             var newUsername = document.getElementById("new-username").value;
             var newPassword = document.getElementById("new-password").value;
 
             // Check if the username is already taken
             if (users.some(user => user.username === newUsername)) {
-                alert("Username is already taken. Please choose another.");
+                displayMessage("Username is already taken. Please choose another.");
                 return;
             }
 
             // Add the new user to the array
             users.push({ username: newUsername, password: newPassword });
+            displayMessage("Sign-up successful! Now you can sign in with your new credentials.");
 
             // Clear the sign-up form
             document.getElementById("new-username").value = "";
             document.getElementById("new-password").value = "";
-
-            alert("Sign-up successful! Now you can sign in with your new credentials.");
         }
 
         // JavaScript code for handling sign-in functionality
-        function signIn() {
+        function handleLogin() {
             var username = document.getElementById("username").value;
             var password = document.getElementById("password").value;
 
@@ -105,11 +127,43 @@
 
             if (user) {
                 // Successful sign-in
-                alert("Sign-in successful! Welcome, " + user.username + ".");
+                currentUser = user;
+                displayMessage("Sign-in successful! Welcome, " + user.username + ".");
+                toggleLoginLogout(true);
             } else {
                 // Failed sign-in
-                alert("Invalid username or password. Try again.");
+                displayMessage("Invalid username or password. Try again.");
             }
+        }
+
+        // JavaScript code for handling logout functionality
+        function handleLogout() {
+            currentUser = null;
+            toggleLoginLogout(false);
+            displayMessage("Logged out successfully.");
+        }
+
+        // Function to toggle login/logout elements based on the user's login status
+        function toggleLoginLogout(isLoggedIn) {
+            var loginForm = document.getElementById("login-form");
+            var signupForm = document.getElementById("signup-form");
+            var logoutButton = document.getElementById("logout-button");
+
+            if (isLoggedIn) {
+                loginForm.style.display = "none";
+                signupForm.style.display = "none";
+                logoutButton.style.display = "block";
+            } else {
+                loginForm.style.display = "block";
+                signupForm.style.display = "block";
+                logoutButton.style.display = "none";
+            }
+        }
+
+        // Function to display messages
+        function displayMessage(message) {
+            var messagesContainer = document.getElementById("messages");
+            messagesContainer.innerHTML = "<p>" + message + "</p>";
         }
     </script>
 </body>
