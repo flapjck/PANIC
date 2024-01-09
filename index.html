@@ -42,10 +42,72 @@
                 <a href="https://flapjck.github.io/Storylines/" target="_blank">Story design</a><br>
             </p>
         </div>
+
+        <!-- Sign-up Form -->
+        <div class="section signup-section">
+            <form id="signup-form">
+                <label for="new-username">New Username:</label>
+                <input type="text" id="new-username" name="new-username" required>
+                <br>
+                <label for="new-password">New Password:</label>
+                <input type="password" id="new-password" name="new-password" required>
+                <br>
+                <button type="button" onclick="signUp()">Sign Up</button>
+            </form>
+        </div>
+
+        <!-- Sign-in Form -->
+        <div class="section signin-section">
+            <form id="signin-form">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+                <br>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+                <br>
+                <button type="button" onclick="signIn()">Sign In</button>
+            </form>
+            <p id="signin-status"></p>
+        </div>
     </div>
 
     <script>
-        // You can still include your JavaScript code here if needed
-    </script>
-</body>
-</html>
+        // User data array
+        var users = [];
+
+        // JavaScript code for handling sign-up functionality
+        function signUp() {
+            var newUsername = document.getElementById("new-username").value;
+            var newPassword = document.getElementById("new-password").value;
+
+            // Check if the username is already taken
+            if (users.some(user => user.username === newUsername)) {
+                alert("Username is already taken. Please choose another.");
+                return;
+            }
+
+            // Add the new user to the array
+            users.push({ username: newUsername, password: newPassword });
+
+            // Clear the sign-up form
+            document.getElementById("new-username").value = "";
+            document.getElementById("new-password").value = "";
+
+            alert("Sign-up successful! Now you can sign in with your new credentials.");
+        }
+
+        // JavaScript code for handling sign-in functionality
+        function signIn() {
+            var username = document.getElementById("username").value;
+            var password = document.getElementById("password").value;
+            var statusElement = document.getElementById("signin-status");
+
+            // Check if the username and password match any user in the array
+            var user = users.find(user => user.username === username && user.password === password);
+
+            if (user) {
+                // Successful sign-in
+                statusElement.innerHTML = "Sign-in successful! Welcome, " + user.username + ".";
+            } else {
+                // Failed sign-in
+                statusE
