@@ -35,6 +35,11 @@
             cursor: pointer;
         }
 
+        #logout-button {
+            display: block;
+            margin: 0 auto; /* Center the button */
+        }
+
         input {
             width: 100%;
             box-sizing: border-box;
@@ -90,15 +95,6 @@
                 <input type="password" id="password" name="password" required>
                 <br>
                 <button type="button" onclick="handleLogin()">Log In</button>
-            </form>
-
-            <form id="signup-form">
-                <label for="new-username">New Username:</label>
-                <input type="text" id="new-username" name="new-username" required>
-                <br>
-                <label for="new-password">New Password:</label>
-                <input type="password" id="new-password" name="new-password" required>
-                <br>
                 <button type="button" onclick="handleSignUp()">Sign Up</button>
             </form>
 
@@ -107,15 +103,15 @@
     </div>
 
     <script>
-        // User data array
-        var users = [];
+        // Load users from localStorage or initialize an empty array
+        var users = JSON.parse(localStorage.getItem("users")) || [];
         // Current logged-in user (null if not logged in)
         var currentUser = null;
 
         // JavaScript code for handling sign-up functionality
         function handleSignUp() {
-            var newUsername = document.getElementById("new-username").value;
-            var newPassword = document.getElementById("new-password").value;
+            var newUsername = document.getElementById("username").value;
+            var newPassword = document.getElementById("password").value;
 
             // Check if the username is already taken
             if (users.some(user => user.username === newUsername)) {
@@ -125,11 +121,12 @@
 
             // Add the new user to the array
             users.push({ username: newUsername, password: newPassword });
+            saveUsersToStorage();
             displayMessage("Sign-up successful! Now you can sign in with your new credentials.");
 
-            // Clear the sign-up form
-            document.getElementById("new-username").value = "";
-            document.getElementById("new-password").value = "";
+            // Clear the form
+            document.getElementById("username").value = "";
+            document.getElementById("password").value = "";
         }
 
         // JavaScript code for handling sign-in functionality
@@ -161,16 +158,13 @@
         // Function to toggle login/logout elements based on the user's login status
         function toggleLoginLogout(isLoggedIn) {
             var loginForm = document.getElementById("login-form");
-            var signupForm = document.getElementById("signup-form");
             var logoutButton = document.getElementById("logout-button");
 
             if (isLoggedIn) {
                 loginForm.style.display = "none";
-                signupForm.style.display = "none";
                 logoutButton.style.display = "block";
             } else {
                 loginForm.style.display = "block";
-                signupForm.style.display = "block";
                 logoutButton.style.display = "none";
             }
         }
@@ -179,6 +173,11 @@
         function displayMessage(message) {
             var messagesContainer = document.getElementById("messages");
             messagesContainer.innerHTML = "<p>" + message + "</p>";
+        }
+
+        // Function to save users to localStorage
+        function saveUsersToStorage() {
+            localStorage.setItem("users", JSON.stringify(users));
         }
     </script>
 </body>
