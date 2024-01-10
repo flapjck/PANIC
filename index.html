@@ -21,7 +21,7 @@
             border-radius: 5px;
         }
 
-        #logout-button, button, input {
+        #logout-button, #wipe-users-button, button, input {
             font-family: 'Source Code Pro', monospace;
             padding: 10px;
             border: 1px solid #FFFFFF; /* White border */
@@ -29,13 +29,13 @@
             margin-top: 10px;
         }
 
-        #logout-button, button {
+        #logout-button, #wipe-users-button, button {
             background-color: white; /* White background color */
             color: #000000; /* Black text color */
             cursor: pointer;
         }
 
-        #logout-button {
+        #logout-button, #wipe-users-button {
             display: block;
             margin: 0 auto; /* Center the button */
         }
@@ -44,6 +44,22 @@
             width: 100%;
             box-sizing: border-box;
             margin-bottom: 10px;
+        }
+
+        /* Hide Intel section by default */
+        .intel-section {
+            display: none;
+        }
+
+        /* Styling for the user list */
+        #user-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 10px 0;
+        }
+
+        #user-list li {
+            margin-bottom: 5px;
         }
     </style>
 </head>
@@ -73,6 +89,7 @@
             </p>
         </div>
 
+        <!-- Intel Section -->
         <div class="section intel-section">
             <h2>Intel</h2>
             <p>
@@ -85,7 +102,7 @@
         <!-- Messages Section -->
         <div id="messages"></div>
 
-        <!-- Login/Logout Section -->
+        <!-- Login/Logout/Wipe Users Section -->
         <div class="section login-section">
             <form id="login-form">
                 <label for="username">Username:</label>
@@ -99,6 +116,12 @@
             </form>
 
             <button id="logout-button" onclick="handleLogout()" style="display: none;">Log Out</button>
+
+            <!-- Wipe Users Section -->
+            <div id="wipe-users-section" style="text-align: center; display: none;">
+                <button id="wipe-users-button" onclick="wipeUsers()">Wipe Users</button>
+                <ul id="user-list"></ul>
+            </div>
         </div>
     </div>
 
@@ -142,6 +165,7 @@
                 currentUser = user;
                 displayMessage("Sign-in successful! Welcome, " + user.username + ".");
                 toggleLoginLogout(true);
+                toggleIntelSection(user.username === "Matthew");
             } else {
                 // Failed sign-in
                 displayMessage("Invalid username or password. Try again.");
@@ -152,7 +176,44 @@
         function handleLogout() {
             currentUser = null;
             toggleLoginLogout(false);
+            toggleIntelSection(false); // Hide Intel section on logout
             displayMessage("Logged out successfully.");
+        }
+
+        // JavaScript code for wiping users
+        function wipeUsers() {
+            if (currentUser && currentUser.username === "Matthew") {
+                // Display user data before wiping
+                displayUserData();
+
+                // Wipe users
+                users = [];
+                saveUsersToStorage();
+                displayMessage("All user data wiped successfully.");
+
+                // Clear user list
+                clearUserList();
+            } else {
+                displayMessage("You don't have permission to wipe users.");
+            }
+        }
+
+        // Function to display user data before wiping
+        function displayUserData() {
+            var userList = document.getElementById("user-list");
+            userList.innerHTML = "";
+            
+            users.forEach(user => {
+                var listItem = document.createElement("li");
+                listItem.textContent = "Username: " + user.username + ", Password: " + user.password;
+                userList.appendChild(listItem);
+            });
+        }
+
+        // Function to clear the user list
+        function clearUserList() {
+            var userList = document.getElementById("user-list");
+            userList.innerHTML = "";
         }
 
         // Function to toggle login/logout elements based on the user's login status
@@ -167,6 +228,12 @@
                 loginForm.style.display = "block";
                 logoutButton.style.display = "none";
             }
+        }
+
+        // Function to toggle the visibility of the Intel section
+        function toggleIntelSection(isVisible) {
+            var intelSection = document.querySelector(".intel-section");
+            intelSection.style.display = isVisible ? "block" : "none";
         }
 
         // Function to display messages
