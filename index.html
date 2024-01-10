@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@300;400;500;600;700&display=swap">
     <link rel="stylesheet" href="style.css"> <!-- Link to the external style.css file -->
     <style>
+        body {
+            font-family: 'Source Code Pro', monospace;
+        }
+
         /* Additional styling for messages and log out button */
         #messages {
             background-color: black;
@@ -17,14 +21,24 @@
             border-radius: 5px;
         }
 
-        #logout-button {
-            background-color: #4CAF50;
-            color: white;
+        #logout-button, button, input {
+            font-family: 'Source Code Pro', monospace;
             padding: 10px;
-            cursor: pointer;
-            border: none;
+            border: 1px solid #FFFFFF; /* White border */
             border-radius: 5px;
             margin-top: 10px;
+        }
+
+        #logout-button, button {
+            background-color: white; /* White background color */
+            color: #000000; /* Black text color */
+            cursor: pointer;
+        }
+
+        input {
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 10px;
         }
     </style>
 </head>
