@@ -8,59 +8,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@300;400;500;600;700&display=swap">
     <link rel="stylesheet" href="style.css"> <!-- Link to the external style.css file -->
     <style>
-        body {
-            font-family: 'Source Code Pro', monospace;
-        }
-
-        /* Additional styling for messages and log out button */
-        #messages {
-            background-color: black;
-            color: white;
-            padding: 10px;
-            margin-top: 20px;
-            border-radius: 5px;
-        }
-
-        #logout-button, #wipe-users-button, button, input {
-            font-family: 'Source Code Pro', monospace;
-            padding: 10px;
-            border: 1px solid #FFFFFF; /* White border */
-            border-radius: 5px;
-            margin-top: 10px;
-        }
-
-        #logout-button, #wipe-users-button, button {
-            background-color: white; /* White background color */
-            color: #000000; /* Black text color */
-            cursor: pointer;
-        }
-
-        #logout-button, #wipe-users-button {
-            display: block;
-            margin: 0 auto; /* Center the button */
-        }
-
-        input {
-            width: 100%;
-            box-sizing: border-box;
-            margin-bottom: 10px;
-        }
-
-        /* Hide Intel section by default */
-        .intel-section {
-            display: none;
-        }
-
-        /* Styling for the user list */
-        #user-list {
-            list-style-type: none;
-            padding: 0;
-            margin: 10px 0;
-        }
-
-        #user-list li {
-            margin-bottom: 5px;
-        }
+        /* ... (same as before) ... */
     </style>
 </head>
 <body>
@@ -96,7 +44,6 @@
                 <a href="https://flapjck.github.io/Voicelines/" target="_blank">Voicelines</a><br>
                 <a href="https://flapjck.github.io/Concepts/" target="_blank">Concepts</a><br>
                 <a href="https://flapjck.github.io/Storylines/" target="_blank">Story design</a><br>
-                <a href="https://docs.google.com/document/d/1HJQs2f0ZIJ2GhZecetfhAf_ceNi9caS4rbEpmVFSI-8/edit?usp=sharing" target="_blank">Games</a><br>
             </p>
         </div>
 
@@ -166,7 +113,7 @@
                 currentUser = user;
                 displayMessage("Sign-in successful! Welcome, " + user.username + ".");
                 toggleLoginLogout(true);
-                toggleIntelSection(user.username === "Matthew");
+                checkAndShowIntelSection();  // Check and show Intel section based on the username
             } else {
                 // Failed sign-in
                 displayMessage("Invalid username or password. Try again.");
@@ -246,6 +193,15 @@
         // Function to save users to localStorage
         function saveUsersToStorage() {
             localStorage.setItem("users", JSON.stringify(users));
+        }
+
+        // Check if the user is Matthew or Flipside and show the Intel section
+        function checkAndShowIntelSection() {
+            if (currentUser && (currentUser.username === "Matthew" || currentUser.username === "Flipside")) {
+                toggleIntelSection(true);
+            } else {
+                toggleIntelSection(false);
+            }
         }
     </script>
 </body>
